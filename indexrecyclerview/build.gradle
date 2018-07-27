@@ -2,7 +2,7 @@ apply plugin: rootProject.ext.plugins.library
 
 android {
     compileSdkVersion 26
-    resourcePrefix "Indexrecyclerview_"
+//    resourcePrefix "Indexrecyclerview_"
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion

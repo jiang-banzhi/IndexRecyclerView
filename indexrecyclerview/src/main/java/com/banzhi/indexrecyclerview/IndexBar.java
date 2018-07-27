@@ -1,16 +1,21 @@
 package com.banzhi.indexrecyclerview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +31,7 @@ import java.util.List;
  */
 
 public class IndexBar extends View {
+    private static final String TAG = "tag";
     private Context mContext;
     /**
      * 默认索引
@@ -51,9 +57,17 @@ public class IndexBar extends View {
      */
     private Paint mPaint;
     /**
-     * 按下时的颜色
+     * 按下时的背景颜色
      */
-    private int pressColor;
+    private int mPressColor;
+    /**
+     * 按下时文字的颜色
+     */
+    private int mTextColor;
+    /**
+     * 文字的颜色
+     */
+    private int mPressTextColor;
     /**
      * 字体大小
      */
@@ -64,6 +78,10 @@ public class IndexBar extends View {
     List<String> indexDatas;
 
     boolean useDatasIndex = true;
+    /**
+     * 临时保存view背景颜色
+     */
+    private int color = android.R.color.transparent;
 
 
     public IndexBar(Context context) {
@@ -88,12 +106,31 @@ public class IndexBar extends View {
         int DEFAULT_SIZE = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics());
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.IndexrecyclerviewIndexBar);
         if (typedArray != null) {
-            textSize = typedArray.getDimensionPixelSize(R.styleable.IndexrecyclerviewIndexBar_Indexrecyclerview_textSize, DEFAULT_SIZE);
-            pressColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_Indexrecyclerview_pressColor, DEFAULT_PRESS_COLOR);
-
+            textSize = typedArray.getDimensionPixelSize(R.styleable.IndexrecyclerviewIndexBar_textSize, DEFAULT_SIZE);
+            mPressColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_pressColor, DEFAULT_PRESS_COLOR);
+            mPressTextColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_pressTextColor, DEFAULT_PRESS_COLOR);
+            mTextColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_textColor, DEFAULT_PRESS_COLOR);
         }
         initPaint();
         initDatas();
+        setmOnIndexPressListener(new OnIndexPressListener() {
+            @Override
+            public void onIndexChange(int index, String text) {
+                textView.setText(text);
+                textView.setVisibility(VISIBLE);
+            }
+
+            @Override
+            public void onMotionEventEnd() {
+                textView.setVisibility(GONE);
+            }
+        });
+    }
+
+    TextView textView;
+
+    public void setTextView(TextView textView) {
+        this.textView = textView;
     }
 
     private void initDatas() {
@@ -110,20 +147,52 @@ public class IndexBar extends View {
         mPaint.setAntiAlias(true);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             //手指抬起时背景恢复透明
-            setBackgroundColor(pressColor);
+            Drawable background = getBackground();
+            if (background != null) {
+                color = ((ColorDrawable) background).getColor();
+            }
+            setBackgroundColor(mPressColor);
+            computePressIndexLocation(event.getY());
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-
-        } else  {
+            computePressIndexLocation(event.getY());
+        } else {
             //手指抬起时背景恢复透明
-            setBackgroundResource(android.R.color.transparent);
-        }
+            setBackgroundColor(color);
+            //重置当前位置
+            currentIndex = -1;
 
+            if (mOnIndexPressListener != null) {
+                mOnIndexPressListener.onMotionEventEnd();
+            }
+        }
         return true;
     }
+
+    int currentIndex = -1;
+
+    /**
+     * 计算按下的位置
+     */
+    private void computePressIndexLocation(float y) {
+        // 计算按下的区域位置
+        currentIndex = (int) ((y - getPaddingTop()) / indexHeght);
+        if (currentIndex < 0) {
+            currentIndex = 0;
+        } else if (currentIndex >= indexDatas.size()) {
+            currentIndex = indexDatas.size() - 1;
+        }
+        invalidate();
+        Log.i(TAG, "computePressIndexLocation: " + currentIndex);
+        if (mOnIndexPressListener != null) {
+            mOnIndexPressListener.onIndexChange(currentIndex, indexDatas.get(currentIndex));
+        }
+    }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -148,6 +217,11 @@ public class IndexBar extends View {
             Paint.FontMetrics metrics = mPaint.getFontMetrics();
             //计算baseline
             int baseLine = (int) ((indexHeght - metrics.bottom - metrics.top) / 2);
+            if (currentIndex == i) {
+                mPaint.setColor(mPressTextColor);
+            } else {
+                mPaint.setColor(mTextColor);
+            }
             //绘制文字
             canvas.drawText(index, mWidth / 2 - mPaint.measureText(index) / 2, getPaddingTop() + baseLine + indexHeght * i, mPaint);
         }
@@ -196,5 +270,24 @@ public class IndexBar extends View {
 
         }
         setMeasuredDimension(measureWidth, measureHeight);
+    }
+
+    OnIndexPressListener mOnIndexPressListener;
+
+    public void setmOnIndexPressListener(OnIndexPressListener mOnIndexPressListener) {
+        this.mOnIndexPressListener = mOnIndexPressListener;
+    }
+
+    public interface OnIndexPressListener {
+        /**
+         * @param index 当前选中的位置
+         * @param text  选中的文字
+         */
+        void onIndexChange(int index, String text);
+
+        /**
+         * 事件结束时回调
+         */
+        void onMotionEventEnd();
     }
 }
