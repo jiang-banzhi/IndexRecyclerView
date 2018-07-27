@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="IndexrecyclerviewIndexBar">
+        <!--index文字大小-->
+        <attr name="Indexrecyclerview_textSize" format="dimension"></attr>
+        <!--index按下的颜色-->
+        <attr name="Indexrecyclerview_pressColor" format="color|reference"></attr>
+    </declare-styleable>
+
+</resources>
