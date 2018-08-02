@@ -9,13 +9,19 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import com.banzhi.indexrecyclerview.interfaces.ISupperInterface;
+import com.banzhi.indexrecyclerview.utils.IndexDataHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,12 +83,13 @@ public class IndexBar extends View {
 
     List<String> indexDatas;
 
-    boolean useDatasIndex = true;
+    boolean useDatasIndex;
     /**
      * 临时保存view背景颜色
      */
     private int color = android.R.color.transparent;
 
+    RecyclerView.LayoutManager layoutManager;
 
     public IndexBar(Context context) {
         super(context);
@@ -113,11 +120,17 @@ public class IndexBar extends View {
         }
         initPaint();
         initDatas();
-        setmOnIndexPressListener(new OnIndexPressListener() {
+        setOnIndexPressListener(new OnIndexPressListener() {
             @Override
             public void onIndexChange(int index, String text) {
                 textView.setText(text);
                 textView.setVisibility(VISIBLE);
+                if (layoutManager != null) {
+                    int position = getPosByTag(text);
+                    if (position > -1) {
+                        ((LinearLayoutManager) layoutManager).scrollToPositionWithOffset(position, 0);
+                    }
+                }
             }
 
             @Override
@@ -133,8 +146,22 @@ public class IndexBar extends View {
         this.textView = textView;
     }
 
+    RecyclerView mRecyclerView;
+    int mHeadCount;
+
+    public void bindRecyclerView(RecyclerView recyclerView) {
+        this.mRecyclerView = recyclerView;
+        if (mRecyclerView != null) {
+            layoutManager = mRecyclerView.getLayoutManager();
+            RecyclerView.ItemDecoration itemDecoration = mRecyclerView.getItemDecorationAt(0);
+            if (itemDecoration instanceof LevitationDecoration) {
+                mHeadCount = ((LevitationDecoration) itemDecoration).getHeadCount();
+            }
+        }
+    }
+
     private void initDatas() {
-        if (useDatasIndex) {
+        if (!useDatasIndex) {
             indexDatas = Arrays.asList(DEFAULT_INDEX);
         } else {
             indexDatas = new ArrayList<>();
@@ -186,8 +213,7 @@ public class IndexBar extends View {
         } else if (currentIndex >= indexDatas.size()) {
             currentIndex = indexDatas.size() - 1;
         }
-        invalidate();
-        Log.i(TAG, "computePressIndexLocation: " + currentIndex);
+        invalidateMySelft();
         if (mOnIndexPressListener != null) {
             mOnIndexPressListener.onIndexChange(currentIndex, indexDatas.get(currentIndex));
         }
@@ -274,7 +300,7 @@ public class IndexBar extends View {
 
     OnIndexPressListener mOnIndexPressListener;
 
-    public void setmOnIndexPressListener(OnIndexPressListener mOnIndexPressListener) {
+    public void setOnIndexPressListener(OnIndexPressListener mOnIndexPressListener) {
         this.mOnIndexPressListener = mOnIndexPressListener;
     }
 
@@ -289,5 +315,85 @@ public class IndexBar extends View {
          * 事件结束时回调
          */
         void onMotionEventEnd();
+    }
+
+    /**
+     * 原始数据
+     */
+    List<? extends ISupperInterface> sourceDatas;
+
+    /**
+     * 设置原始数据
+     *
+     * @param sourceDatas
+     */
+    public void setSourceDatas(List<? extends ISupperInterface> sourceDatas) {
+        this.sourceDatas = sourceDatas;
+        initIndexDatas();
+        invalidateMySelft();
+
+    }
+
+    private void invalidateMySelft() {
+        if (isMainThread()) {
+            invalidate();
+        } else {
+            postInvalidate();
+        }
+    }
+
+    public boolean isMainThread() {
+        return Thread.currentThread() == Looper.getMainLooper().getThread();
+    }
+
+    /**
+     * 初始原始数据 并提取索引
+     */
+    private void initIndexDatas() {
+        if (null == sourceDatas || sourceDatas.isEmpty()) {
+            return;
+        }
+        indexDatas = new ArrayList<>();
+        new IndexDataHelper().sortDatas(sourceDatas, indexDatas);
+//        for (ISupperInterface sourceData : sourceDatas) {
+//            if (!indexDatas.contains(sourceData.getIndexText())) {
+//                indexDatas.add(sourceData.getIndexText());
+//            }
+//        }
+
+//        if (!isSourceDatasAlreadySorted) {
+//            //排序sourceDatas
+//            mDataHelper.sortSourceDatas(mSourceDatas);
+//        } else {
+//            //汉语->拼音
+//            mDataHelper.convert(mSourceDatas);
+//            //拼音->tag
+//            mDataHelper.fillInexTag(mSourceDatas);
+//        }
+//        if (isNeedRealIndex) {
+//            mDataHelper.getSortedIndexDatas(mSourceDatas, mIndexDatas);
+//            computeGapHeight();
+//        }
+    }
+
+    /**
+     * 根据传入的pos返回tag
+     *
+     * @param tag
+     * @return
+     */
+    private int getPosByTag(String tag) {
+        if (null == sourceDatas || sourceDatas.isEmpty()) {
+            return -1;
+        }
+        if (TextUtils.isEmpty(tag)) {
+            return -1;
+        }
+        for (int i = 0; i < sourceDatas.size(); i++) {
+            if (tag.equals(sourceDatas.get(i).getIndexText())) {
+                return i + mHeadCount;
+            }
+        }
+        return -1;
     }
 }
