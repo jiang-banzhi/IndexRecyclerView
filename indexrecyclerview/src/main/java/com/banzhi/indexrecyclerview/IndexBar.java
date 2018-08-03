@@ -238,7 +238,6 @@ public class IndexBar extends View {
     /**
      * 使用源数据作为索引
      *
-     * @param useDatasIndex
      */
     public void setUseDatasIndex() {
         this.useDatasIndex = true;

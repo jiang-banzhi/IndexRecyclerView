@@ -156,6 +156,9 @@ public class LevitationDecoration extends RecyclerView.ItemDecoration {
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             //获取child的position
             int position = params.getViewLayoutPosition();
+            if (mDatas == null || mDatas.isEmpty() || position > mDatas.size() - 1 || position < 0) {
+                return;
+            }
             //计算真实位置
             position -= mHeadCount;
             if (position > -1) {
