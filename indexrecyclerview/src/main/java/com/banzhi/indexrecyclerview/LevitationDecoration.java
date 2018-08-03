@@ -162,8 +162,8 @@ public class LevitationDecoration extends RecyclerView.ItemDecoration {
                 if (position == 0) {
                     drawTitleArea(c, left, right, child, params, position);
                 } else {
-                    if (null != mDatas.get(position).getIndexText()
-                            && !mDatas.get(position).getIndexText().equals(mDatas.get(position - 1).getIndexText())) {
+                    if (null != mDatas.get(position).getIndexTag()
+                            && !mDatas.get(position).getIndexTag().equals(mDatas.get(position - 1).getIndexTag())) {
                         drawTitleArea(c, left, right, child, params, position);
 
                     }
@@ -188,7 +188,7 @@ public class LevitationDecoration extends RecyclerView.ItemDecoration {
         mPaint.setColor(mTitleColor);
         c.drawRect(left, child.getTop() - params.topMargin - mTitleHeight, right, child.getTop() - params.topMargin, mPaint);
         mPaint.setColor(mTextColor);
-        String text = mDatas.get(position).getIndexText();
+        String text = mDatas.get(position).getIndexTag();
         Rect rect = new Rect();
         mPaint.getTextBounds(text, 0, text.length(), rect);
         c.drawText(text, child.getPaddingLeft() + mTextLeftPadding, child.getTop() - params.topMargin - (mTitleHeight / 2 - rect.height() / 2), mPaint);
@@ -204,13 +204,12 @@ public class LevitationDecoration extends RecyclerView.ItemDecoration {
         if (mDatas == null || mDatas.isEmpty() || position > mDatas.size() - 1 || position < 0) {
             return;
         }
-//        View child = parent.getChildAt(position);
         View child = parent.findViewHolderForLayoutPosition(position + mHeadCount).itemView;
         //定义一个flag，Canvas是否位移过的标志
-        String text = mDatas.get(position).getIndexText();
+        String text = mDatas.get(position).getIndexTag();
         boolean flag = false;
         if ((position + 1) < mDatas.size()) {
-            String nextText = mDatas.get(position + 1).getIndexText();
+            String nextText = mDatas.get(position + 1).getIndexTag();
             //当前第一个可见的Item的tag，不等于其后一个item的tag，说明悬浮的View要切换了
             if (null != text && !text.equals(nextText)) {
                 //当第一个可见的item在屏幕中还剩的高度小于title区域的高度时，我们也该开始做悬浮Title的“交换动画”
@@ -258,8 +257,8 @@ public class LevitationDecoration extends RecyclerView.ItemDecoration {
             if (position == 0) {
                 outRect.set(0, mTitleHeight, 0, 0);
             } else {//其他的通过判断
-                String text = mDatas.get(position).getIndexText();
-                String lastText = mDatas.get(position - 1).getIndexText();
+                String text = mDatas.get(position).getIndexTag();
+                String lastText = mDatas.get(position - 1).getIndexTag();
                 if (null != text && !text.equals(lastText)) {
                     //不为空 且跟前一个tag不一样了，说明是新的分类，也要title
                     outRect.set(0, mTitleHeight, 0, 0);

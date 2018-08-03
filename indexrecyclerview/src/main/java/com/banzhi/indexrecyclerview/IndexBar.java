@@ -20,7 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.banzhi.indexrecyclerview.interfaces.ISupperInterface;
+import com.banzhi.indexrecyclerview.bean.BaseIndexBean;
 import com.banzhi.indexrecyclerview.utils.IndexDataHelper;
 
 import java.util.ArrayList;
@@ -320,14 +320,14 @@ public class IndexBar extends View {
     /**
      * 原始数据
      */
-    List<? extends ISupperInterface> sourceDatas;
+    List<? extends BaseIndexBean> sourceDatas;
 
     /**
      * 设置原始数据
      *
      * @param sourceDatas
      */
-    public void setSourceDatas(List<? extends ISupperInterface> sourceDatas) {
+    public void setSourceDatas(List<? extends BaseIndexBean> sourceDatas) {
         this.sourceDatas = sourceDatas;
         initIndexDatas();
         invalidateMySelft();
@@ -390,7 +390,7 @@ public class IndexBar extends View {
             return -1;
         }
         for (int i = 0; i < sourceDatas.size(); i++) {
-            if (tag.equals(sourceDatas.get(i).getIndexText())) {
+            if (tag.equals(sourceDatas.get(i).getIndexTag())) {
                 return i + mHeadCount;
             }
         }

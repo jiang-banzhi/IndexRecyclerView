@@ -1,6 +1,6 @@
 package com.banzhi.indexrecyclerviewsample;
 
-import com.banzhi.indexrecyclerview.interfaces.ISupperInterface;
+import com.banzhi.indexrecyclerview.bean.BaseIndexBean;
 
 /**
  * <pre>
@@ -11,13 +11,11 @@ import com.banzhi.indexrecyclerview.interfaces.ISupperInterface;
  * </pre>
  */
 
-public class IndexBean implements ISupperInterface{
+public class IndexBean extends BaseIndexBean {
     String text;
-    String tag;
 
-    public IndexBean(String tag,String text) {
+    public IndexBean(String text) {
         this.text = text;
-        this.tag = tag;
     }
 
     public String getText() {
@@ -28,16 +26,9 @@ public class IndexBean implements ISupperInterface{
         this.text = text;
     }
 
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
 
     @Override
-    public String getIndexText() {
-        return tag;
+    public String getOrderName() {
+        return text;
     }
 }

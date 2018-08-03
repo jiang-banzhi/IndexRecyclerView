@@ -15,5 +15,5 @@ public interface ISupperInterface {
      *
      * @return
      */
-    String getIndexText();
+    String getIndexTag();
 }

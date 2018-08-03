@@ -1,5 +1,7 @@
 package com.banzhi.indexrecyclerview.interfaces;
 
+import com.banzhi.indexrecyclerview.bean.BaseIndexBean;
+
 import java.util.List;
 
 /**
@@ -12,10 +14,17 @@ import java.util.List;
  */
 
 public interface IDataHelper {
-     /**
+    /**
+     * 数据转换 根据getorderName生成pinyin
+     *
+     * @param datas
+     */
+    void cover(List<? extends BaseIndexBean> datas);
+
+    /**
      * 排序
      *
      * @param datas
      */
-    void sortDatas(List<? extends ISupperInterface> datas, List<String> indexDatas);
+    void sortDatas(List<? extends BaseIndexBean> datas, List<String> indexDatas);
 }

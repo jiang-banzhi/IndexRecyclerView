@@ -1,7 +1,7 @@
 package com.banzhi.indexrecyclerview.utils;
 
+import com.banzhi.indexrecyclerview.bean.BaseIndexBean;
 import com.banzhi.indexrecyclerview.interfaces.IDataHelper;
-import com.banzhi.indexrecyclerview.interfaces.ISupperInterface;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,28 +19,37 @@ import java.util.List;
 public class IndexDataHelper implements IDataHelper {
 
 
+    @Override
+    public void cover(List<? extends BaseIndexBean> datas) {
+        for (BaseIndexBean data : datas) {
+            String pinyinUpper = getUpperPinYin(data.getOrderName());
+            data.setPinyin(pinyinUpper);
+            data.setFirstLetter(pinyinUpper.substring(0, 1));
+        }
+    }
 
     @Override
-    public void sortDatas(List<? extends ISupperInterface> datas, List<String> indexDatas) {
+    public void sortDatas(List<? extends BaseIndexBean> datas, List<String> indexDatas) {
         if (datas == null || datas.isEmpty()) {
             return;
         }
-        Collections.sort(datas, new Comparator<ISupperInterface>() {
+        cover(datas);
+        Collections.sort(datas, new Comparator<BaseIndexBean>() {
             @Override
-            public int compare(ISupperInterface o1, ISupperInterface o2) {
-                if ("#".equals(getUpperPinYin(o1.getIndexText()))) {
+            public int compare(BaseIndexBean o1, BaseIndexBean o2) {
+                if ("#".equals(o1.getPinyin())) {
                     return 1;
-                } else if ("#".equals(getUpperPinYin(o2.getIndexText()))) {
+                } else if ("#".equals(o2.getPinyin())) {
                     return -1;
                 } else {
-                    return getUpperPinYin(o1.getIndexText()).compareTo(getUpperPinYin(o2.getIndexText()));
+                    return o1.getPinyin().compareTo(o2.getPinyin());
                 }
             }
         });
 
-        for (ISupperInterface data : datas) {
+        for (BaseIndexBean data : datas) {
             //获取拼音首字母
-            String pinyin = getUpperPinYin(data.getIndexText()).substring(0, 1);
+            String pinyin = data.getIndexTag();
             if (!indexDatas.contains(pinyin)) {
                 //如果是A-Z字母开头
                 if (pinyin.matches("[A-Z]")) {
