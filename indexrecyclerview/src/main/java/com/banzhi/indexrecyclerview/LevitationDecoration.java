@@ -23,7 +23,7 @@ import java.util.List;
  * <pre>
  * @author : No.1
  * @time : 2018/8/2.
- * @desciption :
+ * @desciption : recyclerview悬停
  * @version :
  * </pre>
  */

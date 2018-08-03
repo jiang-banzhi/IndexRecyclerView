@@ -9,6 +9,11 @@
         <attr name="pressTextColor" format="color|reference"></attr>
         <!--index文字的颜色-->
         <attr name="textColor" format="color|reference"></attr>
+        <!--indexbar的方向-->
+        <attr name="orientation">
+            <enum name="vertical" value="1"/>
+            <enum name="horizontal" value="2"/>
+        </attr>
     </declare-styleable>
 
 </resources>

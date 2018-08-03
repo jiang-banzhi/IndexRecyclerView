@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +39,10 @@ import java.util.List;
 
 public class IndexBar extends View {
     private static final String TAG = "tag";
+
+    public static final int VERTICAL = 1;
+    public static final int HORIZONTAL = 2;
+
     private Context mContext;
     /**
      * 默认索引
@@ -95,6 +100,10 @@ public class IndexBar extends View {
      * 临时保存view背景颜色
      */
     private int color = android.R.color.transparent;
+    /**
+     * indexbar方向
+     */
+    private int mOrientation;
 
     RecyclerView.LayoutManager layoutManager;
 
@@ -124,6 +133,7 @@ public class IndexBar extends View {
             mPressColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_pressColor, DEFAULT_PRESS_COLOR);
             mPressTextColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_pressTextColor, DEFAULT_PRESS_COLOR);
             mTextColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_textColor, DEFAULT_PRESS_COLOR);
+            mOrientation = typedArray.getInt(R.styleable.IndexrecyclerviewIndexBar_orientation, VERTICAL);
         }
         initPaint();
         initDatas();
@@ -191,9 +201,10 @@ public class IndexBar extends View {
                 color = ((ColorDrawable) background).getColor();
             }
             setBackgroundColor(mPressColor);
-            computePressIndexLocation(event.getY());
+            computePressIndexLocation(event.getX(), event.getY());
+
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            computePressIndexLocation(event.getY());
+            computePressIndexLocation(event.getX(), event.getY());
         } else {
             //手指抬起时背景恢复透明
             setBackgroundColor(color);
@@ -212,9 +223,13 @@ public class IndexBar extends View {
     /**
      * 计算按下的位置
      */
-    private void computePressIndexLocation(float y) {
-        // 计算按下的区域位置
-        currentIndex = (int) ((y - getPaddingTop()) / indexHeght);
+    private void computePressIndexLocation(float x, float y) {
+        if (mOrientation == VERTICAL) {
+            // 计算按下的区域位置
+            currentIndex = (int) ((y - getPaddingTop()) / indexHeght);
+        } else {
+            currentIndex = (int) ((x - getPaddingLeft()) / indexHeght);
+        }
         if (currentIndex < 0) {
             currentIndex = 0;
         } else if (currentIndex >= indexDatas.size()) {
@@ -224,6 +239,7 @@ public class IndexBar extends View {
         if (mOnIndexPressListener != null) {
             mOnIndexPressListener.onIndexChange(currentIndex, indexDatas.get(currentIndex));
         }
+
     }
 
     /**
@@ -237,7 +253,6 @@ public class IndexBar extends View {
 
     /**
      * 使用源数据作为索引
-     *
      */
     public void setUseDatasIndex() {
         this.useDatasIndex = true;
@@ -255,7 +270,11 @@ public class IndexBar extends View {
      * 计算单个index高度
      */
     private void computeIndexHeight() {
-        indexHeght = (mHeight - getPaddingTop() - getPaddingBottom()) / indexDatas.size();
+        if (mOrientation == VERTICAL) {
+            indexHeght = (mHeight - getPaddingTop() - getPaddingBottom()) / indexDatas.size();
+        } else {
+            indexHeght = (mWidth - getPaddingLeft() - getPaddingRight()) / indexDatas.size();
+        }
     }
 
     @Override
@@ -272,7 +291,14 @@ public class IndexBar extends View {
                 mPaint.setColor(mTextColor);
             }
             //绘制文字
-            canvas.drawText(index, mWidth / 2 - mPaint.measureText(index) / 2, getPaddingTop() + baseLine + indexHeght * i, mPaint);
+            if (mOrientation == VERTICAL) {
+                canvas.drawText(index, mWidth / 2 - mPaint.measureText(index) / 2,
+                        getPaddingTop() + baseLine + indexHeght * i, mPaint);
+            } else {
+                canvas.drawText(index, getPaddingLeft() + indexHeght * i + mPaint.measureText(index) / 2, mHeight - getPaddingBottom()
+                        , mPaint);
+            }
+            Log.i(TAG, "onDraw: x=" + (getPaddingLeft() + indexHeght * i) + "  y=" + (mHeight));
         }
 
     }
@@ -296,11 +322,26 @@ public class IndexBar extends View {
             //测量计算文字所在矩形，可以得到宽高
             mPaint.getTextBounds(index, 0, index.length(), indexBounds);
             //循环结束后，得到index的最大宽度
-            measureWidth = Math.max(indexBounds.width(), measureWidth);
+            if (mOrientation == VERTICAL) {
+                measureWidth = Math.max(indexBounds.width() + getPaddingLeft() + getPaddingRight(), measureWidth);
+            } else {
+                measureWidth = Math.max(indexBounds.width(), measureWidth);
+            }
             //循环结束后，得到index的最大高度，然后*size
-            measureHeight = Math.max(indexBounds.height(), measureHeight);
+            if (mOrientation == VERTICAL) {
+                measureHeight = Math.max(indexBounds.height(), measureHeight);
+            } else {
+                measureHeight = Math.max(indexBounds.height() + getPaddingTop() + getPaddingBottom(), measureHeight);
+            }
+            Log.i(TAG, "onMeasure: index=" + index + "  width=" + indexBounds.width() + "  height=" + indexBounds.height()
+                    + "  measureWidth=" + measureWidth + "  measureHeight=" + measureHeight);
+
         }
-        measureHeight *= indexDatas.size();
+        if (mOrientation == VERTICAL) {
+            measureHeight *= indexDatas.size();
+        } else {
+            measureWidth *= indexDatas.size();
+        }
         if (wMode == MeasureSpec.EXACTLY) {
             measureWidth = wSize;
         } else if (wMode == MeasureSpec.AT_MOST) {
@@ -387,23 +428,10 @@ public class IndexBar extends View {
             dataHelper.getIndex(sourceDatas, indexDatas);
             computeIndexHeight();
         }
-//        if (!isSourceDatasAlreadySorted) {
-//            //排序sourceDatas
-//            mDataHelper.sortSourceDatas(mSourceDatas);
-//        } else {
-//            //汉语->拼音
-//            mDataHelper.convert(mSourceDatas);
-//            //拼音->tag
-//            mDataHelper.fillInexTag(mSourceDatas);
-//        }
-//        if (isNeedRealIndex) {
-//            mDataHelper.getSortedIndexDatas(mSourceDatas, mIndexDatas);
-//            computeGapHeight();
-//        }
     }
 
     /**
-     * 根据传入的pos返回tag
+     * 根据传入的tag返回position
      *
      * @param tag
      * @return

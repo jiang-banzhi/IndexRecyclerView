@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         indexBar = findViewById(R.id.indexBar);
         indexBar.setUseDatasIndex();
         textView = findViewById(R.id.text);
-//        initLinear();
-        initGrid();
+        initLinear();
+//        initGrid();
         indexBar.setTextView(textView);
         indexBar.bindRecyclerView(recyclerView);
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         indexBeanList = initindexBeanList();
         new IndexDataHelper().sortDatas(indexBeanList);
-        indexBeanList = compute();
+//        indexBeanList = compute();
         indexBar.setOrderly(true);
         indexBar.setSourceDatas(indexBeanList);
         adapter.refresh(indexBeanList);
