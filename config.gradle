@@ -36,7 +36,7 @@ ext {
 
     bintray = [
             dcendents     : 'com.github.dcendents.android-maven',
-            bintray       : 'com.jfrog.bintray',
+            bintray       : 'com.jfrog.indexrecyclerview',
 
             version       : "1.0.0",
 
