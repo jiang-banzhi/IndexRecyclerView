@@ -58,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void initGrid() {
         final GridTestAdapter adapter = new GridTestAdapter(indexBeanList);
-        GridLayoutManager layout = new GridLayoutManager(this, 2);
+        GridLayoutManager layout = new GridLayoutManager(this, 4);
         layout.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 IndexBean indexBean = adapter.getDatas().get(position);
-                return indexBean.isIndex ? 2 : 1;
+                return indexBean.isIndex ? 4 : 1;
             }
         });
         recyclerView.setLayoutManager(layout);
