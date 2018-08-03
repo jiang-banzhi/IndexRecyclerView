@@ -52,6 +52,6 @@ ext {
 
             //bintray- pkg
             bintrayRepo   : "maven",
-            bintrayName   : 'rxhttp',
+            bintrayName   : 'indexrecyclerview',
     ]
 }
