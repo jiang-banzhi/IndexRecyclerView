@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         decor.setDatas(datas);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
         recyclerView.addItemDecoration(decor);
+        indexBar.setUseDatasIndex();
         indexBar.setSourceDatas(datas);
         indexBar.bindRecyclerView(recyclerView);
         recyclerView.setAdapter(new TestAdapter());

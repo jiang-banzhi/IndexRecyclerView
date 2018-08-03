@@ -82,8 +82,15 @@ public class IndexBar extends View {
     private int DEFAULT_PRESS_COLOR = Color.GRAY;
 
     List<String> indexDatas;
-
+    /**
+     * 使用数据内容作为索引
+     */
     boolean useDatasIndex;
+    /**
+     * 数据是否有序
+     */
+    boolean isOrderly;
+
     /**
      * 临时保存view背景颜色
      */
@@ -200,7 +207,7 @@ public class IndexBar extends View {
         return true;
     }
 
-    int currentIndex = -1;
+    private int currentIndex = -1;
 
     /**
      * 计算按下的位置
@@ -219,6 +226,23 @@ public class IndexBar extends View {
         }
     }
 
+    /**
+     * 源数据时候有序
+     *
+     * @param orderly
+     */
+    public void setOrderly(boolean orderly) {
+        isOrderly = orderly;
+    }
+
+    /**
+     * 使用源数据作为索引
+     *
+     * @param useDatasIndex
+     */
+    public void setUseDatasIndex() {
+        this.useDatasIndex = true;
+    }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -353,14 +377,17 @@ public class IndexBar extends View {
         if (null == sourceDatas || sourceDatas.isEmpty()) {
             return;
         }
-        indexDatas = new ArrayList<>();
-        new IndexDataHelper().sortDatas(sourceDatas, indexDatas);
-//        for (ISupperInterface sourceData : sourceDatas) {
-//            if (!indexDatas.contains(sourceData.getIndexText())) {
-//                indexDatas.add(sourceData.getIndexText());
-//            }
-//        }
-
+        IndexDataHelper dataHelper = new IndexDataHelper();
+        dataHelper.cover(sourceDatas);
+        //源数据无序
+        if (!isOrderly) {
+            dataHelper.sortDatas(sourceDatas);
+        }
+        if (useDatasIndex) {
+            indexDatas = new ArrayList<>();
+            dataHelper.getIndex(sourceDatas, indexDatas);
+            computeIndexHeight();
+        }
 //        if (!isSourceDatasAlreadySorted) {
 //            //排序sourceDatas
 //            mDataHelper.sortSourceDatas(mSourceDatas);

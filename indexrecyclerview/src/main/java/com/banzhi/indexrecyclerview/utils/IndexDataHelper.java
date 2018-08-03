@@ -21,6 +21,9 @@ public class IndexDataHelper implements IDataHelper {
 
     @Override
     public void cover(List<? extends BaseIndexBean> datas) {
+        if (datas == null || datas.isEmpty()) {
+            return;
+        }
         for (BaseIndexBean data : datas) {
             String pinyinUpper = getUpperPinYin(data.getOrderName());
             data.setPinyin(pinyinUpper);
@@ -29,7 +32,7 @@ public class IndexDataHelper implements IDataHelper {
     }
 
     @Override
-    public void sortDatas(List<? extends BaseIndexBean> datas, List<String> indexDatas) {
+    public void sortDatas(List<? extends BaseIndexBean> datas) {
         if (datas == null || datas.isEmpty()) {
             return;
         }
@@ -46,7 +49,19 @@ public class IndexDataHelper implements IDataHelper {
                 }
             }
         });
+    }
 
+    @Override
+    public void sortDatasAndGetIndex(List<? extends BaseIndexBean> datas, List<String> indexDatas) {
+        if (datas == null || datas.isEmpty()) {
+            return;
+        }
+        sortDatas(datas);
+        getIndex(datas, indexDatas);
+    }
+
+    @Override
+    public void getIndex(List<? extends BaseIndexBean> datas, List<String> indexDatas) {
         for (BaseIndexBean data : datas) {
             //获取拼音首字母
             String pinyin = data.getIndexTag();
@@ -60,6 +75,7 @@ public class IndexDataHelper implements IDataHelper {
             }
         }
     }
+
 
     /**
      * 获取拼音 大写

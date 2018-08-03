@@ -26,5 +26,20 @@ public interface IDataHelper {
      *
      * @param datas
      */
-    void sortDatas(List<? extends BaseIndexBean> datas, List<String> indexDatas);
+    void sortDatas(List<? extends BaseIndexBean> datas);
+
+    /**
+     * 排序并获取索引数据
+     *
+     * @param datas
+     */
+    void sortDatasAndGetIndex(List<? extends BaseIndexBean> datas, List<String> indexDatas);
+
+    /**
+     * 获取索引
+     *
+     * @param datas
+     * @param indexDatas
+     */
+    void getIndex(List<? extends BaseIndexBean> datas, List<String> indexDatas);
 }
