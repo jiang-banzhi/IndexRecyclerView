@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         indexBeanList = initindexBeanList();
         new IndexDataHelper().sortDatas(indexBeanList);
-       indexBeanList= compute();
+        indexBeanList = compute();
         indexBar.setOrderly(true);
         indexBar.setSourceDatas(indexBeanList);
         adapter.refresh(indexBeanList);
