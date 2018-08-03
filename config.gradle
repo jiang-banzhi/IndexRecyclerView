@@ -36,11 +36,11 @@ ext {
 
     bintray = [
             dcendents     : 'com.github.dcendents.android-maven',
-            bintray       : 'com.jfrog.indexrecyclerview',
+            bintray       : 'com.jfrog.bintray',
 
             version       : "1.0.0",
 
-            group         : "com.banzhi.rxhttp", // Maven Group ID for the artifact，一般填你唯一的包名
+            group         : "com.banzhi.indexrecyclerview", // Maven Group ID for the artifact，一般填你唯一的包名
 
             siteUrl       : 'https://github.com/jiang-banzhi/IndexRecyclerViewSample',   // 项目的主页
             gitUrl        : 'https://github.com/jiang-banzhi/IndexRecyclerViewSample.git',   // Git仓库的url
