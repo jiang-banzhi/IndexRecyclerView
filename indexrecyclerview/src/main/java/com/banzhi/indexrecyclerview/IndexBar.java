@@ -70,21 +70,27 @@ public class IndexBar extends View {
     /**
      * 按下时的背景颜色
      */
-    private int mPressColor;
+    private int mPressBackground;
     /**
-     * 按下时文字的颜色
+     * 文字颜色
      */
     private int mTextColor;
     /**
-     * 文字的颜色
+     * 按下时文字的颜色
      */
     private int mPressTextColor;
+    /**
+     * 文字选中的颜色
+     */
+    private int mSelectTextColor;
+
     /**
      * 字体大小
      */
     private int textSize;
 
     private int DEFAULT_PRESS_COLOR = Color.GRAY;
+    private int DEFAULT_BACKGROUND = Color.TRANSPARENT;
 
     List<String> indexDatas;
     /**
@@ -130,9 +136,10 @@ public class IndexBar extends View {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.IndexrecyclerviewIndexBar);
         if (typedArray != null) {
             textSize = typedArray.getDimensionPixelSize(R.styleable.IndexrecyclerviewIndexBar_indexTextSize, DEFAULT_SIZE);
-            mPressColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_pressColor, DEFAULT_PRESS_COLOR);
-            mPressTextColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_pressTextColor, DEFAULT_PRESS_COLOR);
+            mPressBackground = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_pressBackground, DEFAULT_BACKGROUND);
             mTextColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_indexTextColor, DEFAULT_PRESS_COLOR);
+            mPressTextColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_pressTextColor, mTextColor);
+            mSelectTextColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_selectTextColor, mTextColor);
             mOrientation = typedArray.getInt(R.styleable.IndexrecyclerviewIndexBar_orientation, VERTICAL);
         }
         initPaint();
@@ -144,6 +151,7 @@ public class IndexBar extends View {
                 textView.setVisibility(VISIBLE);
                 if (layoutManager != null) {
                     int position = getPosByTag(text);
+                    Log.i(TAG, "onIndexChange: position===>" + position);
                     if (position > -1) {
                         ((LinearLayoutManager) layoutManager).scrollToPositionWithOffset(position, 0);
                     }
@@ -191,21 +199,24 @@ public class IndexBar extends View {
         mPaint.setAntiAlias(true);
     }
 
+    boolean isPress;
+
     @SuppressLint("ResourceAsColor")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            //手指抬起时背景恢复透明
+            isPress = true;
             Drawable background = getBackground();
             if (background != null) {
                 color = ((ColorDrawable) background).getColor();
             }
-            setBackgroundColor(mPressColor);
+            setBackgroundColor(mPressBackground);
             computePressIndexLocation(event.getX(), event.getY());
 
         } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
             computePressIndexLocation(event.getX(), event.getY());
         } else {
+            isPress = false;
             //手指抬起时背景恢复透明
             setBackgroundColor(color);
             //重置当前位置
@@ -286,9 +297,9 @@ public class IndexBar extends View {
             //计算baseline
             int baseLine = (int) ((indexHeght - metrics.bottom - metrics.top) / 2);
             if (currentIndex == i) {
-                mPaint.setColor(mPressTextColor);
+                mPaint.setColor(mSelectTextColor);
             } else {
-                mPaint.setColor(mTextColor);
+                mPaint.setColor(isPress ? mPressTextColor : mTextColor);
             }
             //绘制文字
             if (mOrientation == VERTICAL) {
@@ -298,7 +309,6 @@ public class IndexBar extends View {
                 canvas.drawText(index, getPaddingLeft() + indexHeght * i + mPaint.measureText(index) / 2, mHeight - getPaddingBottom()
                         , mPaint);
             }
-            Log.i(TAG, "onDraw: x=" + (getPaddingLeft() + indexHeght * i) + "  y=" + (mHeight));
         }
 
     }
@@ -333,8 +343,6 @@ public class IndexBar extends View {
             } else {
                 measureHeight = Math.max(indexBounds.height() + getPaddingTop() + getPaddingBottom(), measureHeight);
             }
-            Log.i(TAG, "onMeasure: index=" + index + "  width=" + indexBounds.width() + "  height=" + indexBounds.height()
-                    + "  measureWidth=" + measureWidth + "  measureHeight=" + measureHeight);
 
         }
         if (mOrientation == VERTICAL) {

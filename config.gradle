@@ -11,7 +11,7 @@ ext {
             minSdkVersion    : 14,
             targetSdkVersion : 26,
             versionCode      : 1,
-            versionName      : "1.0.0"
+            versionName      : "1.0.2"
     ]
 
 
@@ -38,7 +38,7 @@ ext {
             dcendents     : 'com.github.dcendents.android-maven',
             bintray       : 'com.jfrog.bintray',
 
-            version       : "1.0.1",
+            version       : "1.0.2",
 
             group         : "com.banzhi.indexrecyclerview", // Maven Group ID for the artifact，一般填你唯一的包名
 

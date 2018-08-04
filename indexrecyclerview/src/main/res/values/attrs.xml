@@ -4,11 +4,13 @@
         <!--index文字大小-->
         <attr name="indexTextSize" format="dimension"></attr>
         <!--index按下的颜色-->
-        <attr name="pressColor" format="color|reference"></attr>
+        <attr name="pressBackground" format="color|reference"></attr>
         <!--index按下时文字的颜色-->
         <attr name="pressTextColor" format="color|reference"></attr>
         <!--index文字的颜色-->
         <attr name="indexTextColor" format="color|reference"></attr>
+        <!--index文字选中的颜色-->
+        <attr name="selectTextColor" format="color|reference"></attr>
         <!--indexbar的方向-->
         <attr name="orientation">
             <enum name="vertical" value="1"/>
