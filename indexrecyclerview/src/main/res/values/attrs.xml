@@ -2,13 +2,13 @@
 <resources>
     <declare-styleable name="IndexrecyclerviewIndexBar">
         <!--index文字大小-->
-        <attr name="textSize" format="dimension"></attr>
+        <attr name="indexTextSize" format="dimension"></attr>
         <!--index按下的颜色-->
         <attr name="pressColor" format="color|reference"></attr>
         <!--index按下时文字的颜色-->
         <attr name="pressTextColor" format="color|reference"></attr>
         <!--index文字的颜色-->
-        <attr name="textColor" format="color|reference"></attr>
+        <attr name="indexTextColor" format="color|reference"></attr>
         <!--indexbar的方向-->
         <attr name="orientation">
             <enum name="vertical" value="1"/>

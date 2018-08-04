@@ -129,10 +129,10 @@ public class IndexBar extends View {
         int DEFAULT_SIZE = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics());
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.IndexrecyclerviewIndexBar);
         if (typedArray != null) {
-            textSize = typedArray.getDimensionPixelSize(R.styleable.IndexrecyclerviewIndexBar_textSize, DEFAULT_SIZE);
+            textSize = typedArray.getDimensionPixelSize(R.styleable.IndexrecyclerviewIndexBar_indexTextSize, DEFAULT_SIZE);
             mPressColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_pressColor, DEFAULT_PRESS_COLOR);
             mPressTextColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_pressTextColor, DEFAULT_PRESS_COLOR);
-            mTextColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_textColor, DEFAULT_PRESS_COLOR);
+            mTextColor = typedArray.getColor(R.styleable.IndexrecyclerviewIndexBar_indexTextColor, DEFAULT_PRESS_COLOR);
             mOrientation = typedArray.getInt(R.styleable.IndexrecyclerviewIndexBar_orientation, VERTICAL);
         }
         initPaint();

@@ -18,7 +18,7 @@
         android:padding="10dp"
         android:layout_gravity="right"
         app:pressTextColor="#fd0101"
-        app:textColor="#700303" />
+        app:indexTextColor="#700303" />
 
     <TextView
         android:id="@+id/text"
