@@ -1,4 +1,4 @@
-package com.banzhi.indexrecyclerview;
+package com.banzhi.indexrecyclerview.decoration;
 
 import android.content.Context;
 import android.graphics.Canvas;

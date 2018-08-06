@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.banzhi.indexrecyclerview.IndexBar;
-import com.banzhi.indexrecyclerview.LevitationDecoration;
+import com.banzhi.indexrecyclerview.widget.IndexBar;
+import com.banzhi.indexrecyclerview.decoration.LevitationDecoration;
 import com.banzhi.indexrecyclerview.utils.IndexDataHelper;
 
 import java.util.ArrayList;
@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         indexBar = findViewById(R.id.indexBar);
         indexBar.setUseDatasIndex();
         textView = findViewById(R.id.text);
-        initLinear();
-//        initGrid();
+//        initLinear();
+        initGrid();
         indexBar.setTextView(textView);
         indexBar.bindRecyclerView(recyclerView);
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         indexBeanList = initindexBeanList();
         new IndexDataHelper().sortDatas(indexBeanList);
-//        indexBeanList = compute();
+        indexBeanList = compute();
         indexBar.setOrderly(true);
         indexBar.setSourceDatas(indexBeanList);
         adapter.refresh(indexBeanList);

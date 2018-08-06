@@ -11,14 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.banzhi.indexrecyclerview.IndexBar
+    <com.banzhi.indexrecyclerview.widget.IndexBar
         android:id="@+id/indexBar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="right"
+        android:background="@android:color/holo_purple"
         android:padding="10dp"
         app:indexTextColor="#7e1303"
-     />
+        app:pressBackground="@android:color/holo_red_light"
+        app:pressTextColor="@color/colorPrimary"
+        app:selectTextColor="@android:color/white" />
 
     <TextView
         android:id="@+id/text"
@@ -28,7 +31,8 @@
         android:background="@color/colorAccent"
         android:gravity="center"
         android:padding="20dp"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
         android:visibility="gone" />
 
 </FrameLayout>

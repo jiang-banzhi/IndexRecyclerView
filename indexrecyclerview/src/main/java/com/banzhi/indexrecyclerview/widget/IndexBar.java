@@ -1,4 +1,4 @@
-package com.banzhi.indexrecyclerview;
+package com.banzhi.indexrecyclerview.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,7 +21,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.banzhi.indexrecyclerview.decoration.LevitationDecoration;
+import com.banzhi.indexrecyclerview.R;
 import com.banzhi.indexrecyclerview.bean.BaseIndexBean;
+import com.banzhi.indexrecyclerview.interfaces.IDataHelper;
 import com.banzhi.indexrecyclerview.utils.IndexDataHelper;
 
 import java.util.ArrayList;
@@ -111,6 +114,10 @@ public class IndexBar extends View {
      */
     private int mOrientation;
 
+    /**
+     * 数据转换帮助类
+     */
+    IDataHelper mDataHelper;
     RecyclerView.LayoutManager layoutManager;
 
     public IndexBar(Context context) {
@@ -147,8 +154,10 @@ public class IndexBar extends View {
         setOnIndexPressListener(new OnIndexPressListener() {
             @Override
             public void onIndexChange(int index, String text) {
-                textView.setText(text);
-                textView.setVisibility(VISIBLE);
+                if (textView != null) {
+                    textView.setText(text);
+                    textView.setVisibility(VISIBLE);
+                }
                 if (layoutManager != null) {
                     int position = getPosByTag(text);
                     Log.i(TAG, "onIndexChange: position===>" + position);
@@ -160,7 +169,9 @@ public class IndexBar extends View {
 
             @Override
             public void onMotionEventEnd() {
-                textView.setVisibility(GONE);
+                if (textView != null) {
+                    textView.setVisibility(GONE);
+                }
             }
         });
     }
@@ -425,15 +436,17 @@ public class IndexBar extends View {
         if (null == sourceDatas || sourceDatas.isEmpty()) {
             return;
         }
-        IndexDataHelper dataHelper = new IndexDataHelper();
-        dataHelper.cover(sourceDatas);
+        if (mDataHelper == null) {
+            mDataHelper = new IndexDataHelper();
+        }
+        mDataHelper.cover(sourceDatas);
         //源数据无序
         if (!isOrderly) {
-            dataHelper.sortDatas(sourceDatas);
+            mDataHelper.sortDatas(sourceDatas);
         }
         if (useDatasIndex) {
             indexDatas = new ArrayList<>();
-            dataHelper.getIndex(sourceDatas, indexDatas);
+            mDataHelper.getIndex(sourceDatas, indexDatas);
             computeIndexHeight();
         }
     }
