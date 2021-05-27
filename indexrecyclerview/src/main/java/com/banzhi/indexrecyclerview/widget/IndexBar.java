@@ -10,9 +10,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Looper;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -21,9 +18,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.banzhi.indexrecyclerview.decoration.LevitationDecoration;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.banzhi.indexrecyclerview.R;
 import com.banzhi.indexrecyclerview.bean.BaseIndexBean;
+import com.banzhi.indexrecyclerview.decoration.LevitationDecoration;
 import com.banzhi.indexrecyclerview.interfaces.IDataHelper;
 import com.banzhi.indexrecyclerview.utils.IndexDataHelper;
 
@@ -95,15 +96,15 @@ public class IndexBar extends View {
     private int DEFAULT_PRESS_COLOR = Color.GRAY;
     private int DEFAULT_BACKGROUND = Color.TRANSPARENT;
 
-    List<String> indexDatas;
+    private List<String> indexDatas;
     /**
      * 使用数据内容作为索引
      */
-    boolean useDatasIndex;
+    private boolean useDatasIndex;
     /**
      * 数据是否有序
      */
-    boolean isOrderly;
+    private boolean isOrderly;
 
     /**
      * 临时保存view背景颜色
@@ -117,8 +118,8 @@ public class IndexBar extends View {
     /**
      * 数据转换帮助类
      */
-    IDataHelper mDataHelper;
-    RecyclerView.LayoutManager layoutManager;
+    private IDataHelper mDataHelper;
+    private RecyclerView.LayoutManager layoutManager;
 
     public IndexBar(Context context) {
         super(context);

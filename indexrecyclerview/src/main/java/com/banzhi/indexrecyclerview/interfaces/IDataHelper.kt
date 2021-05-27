@@ -1,39 +1,36 @@
-package com.banzhi.indexrecyclerview.interfaces;
+package com.banzhi.indexrecyclerview.interfaces
 
-import com.banzhi.indexrecyclerview.bean.BaseIndexBean;
-
-import java.util.List;
+import com.banzhi.indexrecyclerview.bean.BaseIndexBean
 
 /**
  * <pre>
- * @author : No.1
- * @time : 2018/8/2.
+ * @author :
+ * @time : 2021/5/26.
  * @desciption :
  * @version :
- * </pre>
+</pre> *
  */
-
-public interface IDataHelper {
+interface IDataHelper {
     /**
      * 数据转换 根据getorderName生成pinyin
      *
      * @param datas
      */
-    void cover(List<? extends BaseIndexBean> datas);
+    fun cover(datas: MutableList<out BaseIndexBean>)
 
     /**
      * 排序
      *
      * @param datas
      */
-    void sortDatas(List<? extends BaseIndexBean> datas);
+    fun sortDatas(datas: MutableList<out BaseIndexBean>)
 
     /**
      * 排序并获取索引数据
      *
      * @param datas
      */
-    void sortDatasAndGetIndex(List<? extends BaseIndexBean> datas, List<String> indexDatas);
+    fun sortDatasAndGetIndex(datas: MutableList<out BaseIndexBean>, indexDatas: MutableList<String>)
 
     /**
      * 获取索引
@@ -41,5 +38,5 @@ public interface IDataHelper {
      * @param datas
      * @param indexDatas
      */
-    void getIndex(List<? extends BaseIndexBean> datas, List<String> indexDatas);
+    fun getIndex(datas: MutableList<out BaseIndexBean>, indexDatas: MutableList<String>)
 }
