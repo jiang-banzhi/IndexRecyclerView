@@ -2,7 +2,7 @@ apply plugin: rootProject.ext.plugins.library
 
 android {
     compileSdkVersion 26
-//    resourcePrefix "Indexrecyclerview_"
+
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
@@ -31,4 +31,3 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
-apply from:'mevan.gradle'
