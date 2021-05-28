@@ -1,5 +1,6 @@
 package com.banzhi.indexrecyclerview.bean;
 
+
 import com.banzhi.indexrecyclerview.interfaces.ISupperInterface;
 
 /**

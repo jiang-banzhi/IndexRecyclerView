@@ -1,4 +1,4 @@
-package com.banzhi.indexrecyclerview.interfaces
+package com.banzhi.indexrecyclerview.interfaces;
 
 /**
  * <pre>
@@ -8,11 +8,11 @@ package com.banzhi.indexrecyclerview.interfaces
  * @version :
 </pre> *
  */
-interface ISupperInterface {
+public interface ISupperInterface {
     /**
      * title的显示内容
      *
      * @return
      */
-    fun getIndexTag(): String
+    String getIndexTag();
 }

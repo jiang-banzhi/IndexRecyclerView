@@ -1,7 +1,7 @@
 package com.banzhi.indexrecyclerview.utils;
 
 
-import androidx.collection.SimpleArrayMap;
+import android.support.v4.util.SimpleArrayMap;
 
 public final class PinyinUtils {
 
