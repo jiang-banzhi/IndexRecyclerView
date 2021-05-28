@@ -1,20 +1,21 @@
 package com.banzhi.indexrecyclerviewsample;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.banzhi.indexrecyclerview.widget.IndexBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.banzhi.indexrecyclerview.decoration.LevitationDecoration;
 import com.banzhi.indexrecyclerview.utils.IndexDataHelper;
+import com.banzhi.indexrecyclerview.widget.IndexBar;
 
 import java.util.ArrayList;
 import java.util.List;

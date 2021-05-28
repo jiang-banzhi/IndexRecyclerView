@@ -1,19 +1,18 @@
-package com.banzhi.indexrecyclerview.interfaces;
+package com.banzhi.indexrecyclerview.interfaces
 
 /**
  * <pre>
  * @author : No.1
- * @time : 2018/8/2.
+ * @time : 2021/5/26.
  * @desciption : indexbar支持
  * @version :
- * </pre>
+</pre> *
  */
-
-public interface ISupperInterface {
+interface ISupperInterface {
     /**
      * title的显示内容
      *
      * @return
      */
-    String getIndexTag();
+    fun getIndexTag(): String
 }
