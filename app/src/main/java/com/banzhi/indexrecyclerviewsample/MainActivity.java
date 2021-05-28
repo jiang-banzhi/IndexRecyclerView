@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         indexBar = findViewById(R.id.indexBar);
         indexBar.setUseDatasIndex();
         textView = findViewById(R.id.text);
-//        initLinear();
-        initGrid();
+        initLinear();
+//        initGrid();
         indexBar.setTextView(textView);
         indexBar.bindRecyclerView(recyclerView);
 
