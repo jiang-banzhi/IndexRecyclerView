@@ -1,0 +1,33 @@
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"RemoteRepositoriesConfiguration\">\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Maven Central repository\" />\r\n      <option name=\"url\" value=\"https://repo1.maven.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"jboss.community\" />\r\n      <option name=\"name\" value=\"JBoss Community repository\" />\r\n      <option name=\"url\" value=\"https://repository.jboss.org/nexus/content/repositories/public/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"BintrayJCenter\" />\r\n      <option name=\"name\" value=\"BintrayJCenter\" />\r\n      <option name=\"url\" value=\"https://jcenter.bintray.com/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"Google\" />\r\n      <option name=\"name\" value=\"Google\" />\r\n      <option name=\"url\" value=\"https://dl.google.com/dl/android/maven2/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"D:\\Android\\Sdk\\extras\\android\\m2repository\" />\r\n      <option name=\"name\" value=\"D:\\Android\\Sdk\\extras\\android\\m2repository\" />\r\n      <option name=\"url\" value=\"file:/D:/Android/Sdk/extras/android/m2repository/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"MavenRepo\" />\r\n      <option name=\"name\" value=\"MavenRepo\" />\r\n      <option name=\"url\" value=\"https://repo.maven.apache.org/maven2/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"D:\\Android\\Sdk\\extras\\m2repository\" />\r\n      <option name=\"name\" value=\"D:\\Android\\Sdk\\extras\\m2repository\" />\r\n      <option name=\"url\" value=\"file:/D:/Android/Sdk/extras/m2repository/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"D:\\Android\\Sdk\\extras\\google\\m2repository\" />\r\n      <option name=\"name\" value=\"D:\\Android\\Sdk\\extras\\google\\m2repository\" />\r\n      <option name=\"url\" value=\"file:/D:/Android/Sdk/extras/google/m2repository/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"maven\" />\r\n      <option name=\"name\" value=\"maven\" />\r\n      <option name=\"url\" value=\"https://jitpack.io\" />\r\n    </remote-repository>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/jarRepositories.xml	(revision 1827ef1881298d9887a9efa7bdc2e7c4260dbb68)
++++ .idea/jarRepositories.xml	(date 1622104992160)
+@@ -27,11 +27,6 @@
+       <option name="url" value="file:/D:/Android/Sdk/extras/android/m2repository/" />
+     </remote-repository>
+     <remote-repository>
+-      <option name="id" value="MavenRepo" />
+-      <option name="name" value="MavenRepo" />
+-      <option name="url" value="https://repo.maven.apache.org/maven2/" />
+-    </remote-repository>
+-    <remote-repository>
+       <option name="id" value="D:\Android\Sdk\extras\m2repository" />
+       <option name="name" value="D:\Android\Sdk\extras\m2repository" />
+       <option name="url" value="file:/D:/Android/Sdk/extras/m2repository/" />
+@@ -40,6 +35,11 @@
+       <option name="id" value="D:\Android\Sdk\extras\google\m2repository" />
+       <option name="name" value="D:\Android\Sdk\extras\google\m2repository" />
+       <option name="url" value="file:/D:/Android/Sdk/extras/google/m2repository/" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="MavenRepo" />
++      <option name="name" value="MavenRepo" />
++      <option name="url" value="https://repo.maven.apache.org/maven2/" />
+     </remote-repository>
+     <remote-repository>
+       <option name="id" value="maven" />
