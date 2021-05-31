@@ -1,11 +1,8 @@
-package com.banzhi.indexrecyclerview.utils;
+package com.banzhi.indexrecyclerview.utils
 
-import com.banzhi.indexrecyclerview.bean.BaseIndexBean;
-import com.banzhi.indexrecyclerview.interfaces.IDataHelper;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.banzhi.indexrecyclerview.bean.BaseIndexBean
+import com.banzhi.indexrecyclerview.interfaces.IDataHelper
+import java.util.*
 
 /**
  * <pre>
@@ -13,69 +10,62 @@ import java.util.List;
  * @time : 2018/8/2.
  * @desciption :
  * @version :
- * </pre>
+</pre> *
  */
-
-public class IndexDataHelper implements IDataHelper {
-
-
-    @Override
-    public void cover(List<? extends BaseIndexBean> datas) {
-        if (datas == null || datas.isEmpty()) {
-            return;
+class IndexDataHelper : IDataHelper {
+    override fun cover(datas: MutableList<out BaseIndexBean>) {
+        if (datas.isNullOrEmpty()) {
+            return
         }
-        for (BaseIndexBean data : datas) {
-            String pinyinUpper = getUpperPinYin(data.getOrderName());
-            data.setPinyin(pinyinUpper);
-            data.setFirstLetter(pinyinUpper.substring(0, 1));
+        for (data in datas) {
+            val pinyinUpper = getUpperPinYin(data.orderName)
+            data.pinyin = pinyinUpper
+            data.firstLetter = pinyinUpper.substring(0, 1)
         }
     }
 
-    @Override
-    public void sortDatas(List<? extends BaseIndexBean> datas) {
-        if (datas == null || datas.isEmpty()) {
-            return;
+    override fun sortDatas(datas: MutableList<out BaseIndexBean>) {
+        if (datas.isNullOrEmpty()) {
+            return
         }
-        cover(datas);
-        Collections.sort(datas, new Comparator<BaseIndexBean>() {
-            @Override
-            public int compare(BaseIndexBean o1, BaseIndexBean o2) {
-                if ("#".equals(o1.getPinyin())) {
-                    return 1;
-                } else if ("#".equals(o2.getPinyin())) {
-                    return -1;
-                } else {
-                    return o1.getPinyin().compareTo(o2.getPinyin());
+        cover(datas)
+        datas.sortWith(Comparator { o1, o2 ->
+            when {
+                "#" == o1.pinyin -> {
+                    1
+                }
+                "#" == o2.pinyin -> {
+                    -1
+                }
+                else -> {
+                    o1.pinyin.compareTo(o2.pinyin)
                 }
             }
-        });
+        })
     }
 
-    @Override
-    public void sortDatasAndGetIndex(List<? extends BaseIndexBean> datas, List<String> indexDatas) {
-        if (datas == null || datas.isEmpty()) {
-            return;
+    override fun sortDatasAndGetIndex(datas: MutableList<out BaseIndexBean>, indexDatas: MutableList<String>) {
+        if (datas.isNullOrEmpty()) {
+            return
         }
-        sortDatas(datas);
-        getIndex(datas, indexDatas);
+        sortDatas(datas)
+        getIndex(datas, indexDatas)
     }
 
-    @Override
-    public void getIndex(List<? extends BaseIndexBean> datas, List<String> indexDatas) {
-        for (BaseIndexBean data : datas) {
+    override fun getIndex(datas: MutableList<out BaseIndexBean>, indexDatas: MutableList<String>) {
+        for (data in datas) {
             //获取拼音首字母
-            String pinyin = data.getIndexTag();
+            val pinyin = data.getIndexTag()
             if (!indexDatas.contains(pinyin)) {
                 //如果是A-Z字母开头
-                if (pinyin.matches("[A-Z]")) {
-                    indexDatas.add(pinyin);
-                } else {//特殊字母这里统一用#处理
-                    indexDatas.add("#");
+                if (pinyin.matches(Regex("[A-Z]"))) {
+                    indexDatas.add(pinyin)
+                } else { //特殊字母这里统一用#处理
+                    indexDatas.add("#")
                 }
             }
         }
     }
-
 
     /**
      * 获取拼音 大写
@@ -83,7 +73,7 @@ public class IndexDataHelper implements IDataHelper {
      * @param text
      * @return
      */
-    private String getUpperPinYin(String text) {
-        return PinyinUtils.ccs2Pinyin(text).toUpperCase();
+    private fun getUpperPinYin(text: String): String {
+        return PinyinUtils.ccs2Pinyin(text)!!.toUpperCase()
     }
 }
