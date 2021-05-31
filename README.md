@@ -10,5 +10,5 @@
   
 ###  
     dependencies {
-	        implementation 'com.github.jiang-banzhi:IndexRecyclerViewSample:1.0.7'
+	        implementation 'com.github.jiang-banzhi:IndexRecyclerView:2.1'
     }
